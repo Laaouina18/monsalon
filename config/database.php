@@ -1,19 +1,25 @@
-<?php 
-class datavbase{
-    private $host="localhost";
-    private $db_name = "monsalon";
+
+<?php
+class Database{
+    // Connexion à la base de données
+    private $host = "localhost";
+    private $db_name = "monsalonline";
     private $username = "root";
     private $password = "";
-    private $conn;
-    public function connect(){
-    $this->conn = null;
-    try {
-        $this->conn = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->db_name, $this->username, $this->password);
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        echo "connection erreur :" . $e->getMessage();
-    }
+    public $connexion;
 
-    return $this->conn;
-}
+    // getter pour la connexion
+    public function getConnection(){
+
+        $this->connexion = null;
+
+        try{
+            $this->connexion = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->connexion->exec("set names utf8");
+        }catch(PDOException $exception){
+            echo "Erreur de connexion : " . $exception->getMessage();
+        }
+
+        return $this->connexion;
+    }   
 }
