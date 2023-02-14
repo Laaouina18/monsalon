@@ -10,7 +10,7 @@ class client{
     public $LastName;
     public $Email;
     public $PhoneNumber;
-    public $Adress;
+    public $Address;
     public $City;
     public $State;
     public $Customer_reference;
@@ -36,7 +36,7 @@ class client{
      FROM " . $this->table . " ";
 
         // On prépare la requête
-        $query = $this->connexion->prepare($sql);
+        $query = $this->connexion->query($sql);
 
         // On exécute la requête
         $query->execute();
@@ -50,13 +50,13 @@ class client{
      *
      * @return void
      */
-    public function creer(){
+    public function creer():bool{
 
         // Ecriture de la requête SQL en y insérant le nom de la table
         $sql = "INSERT INTO " . $this->table . " SET LastName=:LastName,
          FirstName=:FirstName, Address=:Address, City=:City,
           Customer_reference=:Customer_reference,State=:State,
-          PhoneNumber=:PhoneNUmber,Email=:Email ";
+          PhoneNumber=:PhoneNumber,Email=:Email ";
 
         // Préparation de la requête
         $query = $this->connexion->prepare($sql);
@@ -66,7 +66,7 @@ class client{
         $this->LastName=htmlspecialchars(strip_tags($this->LastName));
         $this->Email=htmlspecialchars(strip_tags($this->Email));
         $this->PhoneNumber=htmlspecialchars(strip_tags($this->PhoneNumber));
-        $this->Adress=htmlspecialchars(strip_tags($this->Adress));
+        $this->Address=htmlspecialchars(strip_tags($this->Address));
         $this->City = htmlspecialchars(strip_tags($this->City));
         $this->Customer_reference = htmlspecialchars(strip_tags($this->Customer_reference));
         $this->State = htmlspecialchars(strip_tags($this->State));
@@ -76,6 +76,11 @@ class client{
         $query->bindParam(":LastName", $this->LastName);
         $query->bindParam(":Email", $this->Email);
         $query->bindParam(":PhoneNumber", $this->PhoneNumber);
+        $query->bindParam(":Address", $this->Address);
+        $query->bindParam(":City", $this->City);
+        $query->bindParam(":Customer_reference", $this->Customer_reference);
+        $query->bindParam(":State", $this->State);
+
         
 
         // Exécution de la requête
@@ -92,13 +97,13 @@ class client{
      */
     public function lireUn(){
         // On écrit la requête
-        $sql = "SELECT c.nom as categories_nom, p.id, p.nom, p.description, p.prix, p.categories_id, p.created_at FROM " . $this->table . " p LEFT JOIN categories c ON p.categories_id = c.id WHERE p.id = ? LIMIT 0,1";
+        $sql = "SELECT * FROM " . $this->table ;
 
         // On prépare la requête
         $query = $this->connexion->prepare( $sql );
 
         // On attache l'id
-        $query->bindParam(1, $this->id);
+        $query->bindParam(1, $this->CustomerID);
 
         // On exécute la requête
         $query->execute();
@@ -107,11 +112,15 @@ class client{
         $row = $query->fetch(PDO::FETCH_ASSOC);
 
         // On hydrate l'objet
-        $this->nom = $row['nom'];
-        $this->prix = $row['prix'];
-        $this->description = $row['description'];
-        $this->categories_id = $row['categories_id'];
-        $this->categories_nom = $row['categories_nom'];
+        $this->FirstName = $row['FirstName'];
+        $this->LastName = $row['LastName'];
+        $this->Email = $row['Email'];
+        $this->State = $row['State'];
+        $this->Address= $row['Adress'];
+        $this->City = $row['City'];
+        $this->PhoneNumber = $row['categories_id'];
+        $this->Customer_reference = $row['Customer_reference '];
+        
     }
 
     /**
@@ -119,52 +128,60 @@ class client{
      *
      * @return void
      */
-    public function supprimer(){
-        // On écrit la requête
-        $sql = "DELETE FROM " . $this->table . " WHERE id = ?";
+  public function supprimer():bool{
+    // On écrit la requête
+    $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
 
-        // On prépare la requête
-        $query = $this->connexion->prepare( $sql );
+    // On prépare la requête
+    $query = $this->connexion->prepare( $sql );
 
-        // On sécurise les données
-        $this->id=htmlspecialchars(strip_tags($this->id));
+    // On attache l'id
+    $query->bindParam(':id', $this->CustomerID);
 
-        // On attache l'id
-        $query->bindParam(1, $this->id);
-
-        // On exécute la requête
-        if($query->execute()){
-            return true;
-        }
-        
-        return false;
+    // On exécute la requête
+    if($query->execute()){
+        return true;
     }
+
+    return false;
+}
 
     /**
      * Mettre à jour un produit
      *
      * @return void
      */
-    public function modifier(){
+    public function modifier():bool{
         // On écrit la requête
-        $sql = "UPDATE " . $this->table . " SET nom = :nom, prix = :prix, description = :description, categories_id = :categories_id WHERE id = :id";
+        $sql = "UPDATE " . $this->table . " SET FirstName = :Firstname, LastName = :LastName,  Address= :Address,    
+         PhoneNumber= :PhoneNumber, City=:City,State=:State,
+         Customer_reference=:Customer_reference,Email=:Email WHERE CustomerID = :CustomerID";
         
         // On prépare la requête
         $query = $this->connexion->prepare($sql);
         
         // On sécurise les données
-        $this->nom=htmlspecialchars(strip_tags($this->nom));
-        $this->prix=htmlspecialchars(strip_tags($this->prix));
-        $this->description=htmlspecialchars(strip_tags($this->description));
-        $this->categories_id=htmlspecialchars(strip_tags($this->categories_id));
-        $this->id=htmlspecialchars(strip_tags($this->id));
+        $this->FirstName=htmlspecialchars(strip_tags($this->FirstName));
+        $this->LastName=htmlspecialchars(strip_tags($this->LastName));
+        $this->Email=htmlspecialchars(strip_tags($this->Email));
+        $this->Address=htmlspecialchars(strip_tags($this->Address));
+        $this->PhoneNumber=htmlspecialchars(strip_tags($this->PhoneNumber));
+        $this->City=htmlspecialchars(strip_tags($this->City));
+        $this->State=htmlspecialchars(strip_tags($this->State));
+        $this->Customer_reference=htmlspecialchars(strip_tags($this->Customer_reference));
+        $this->CustomerID=htmlspecialchars(strip_tags($this->CustomerID));
         
         // On attache les variables
-        $query->bindParam(':nom', $this->nom);
-        $query->bindParam(':prix', $this->prix);
-        $query->bindParam(':description', $this->description);
-        $query->bindParam(':categories_id', $this->categories_id);
-        $query->bindParam(':id', $this->id);
+        $query->bindParam(":CustomerID", $this->CustomerID);
+        $query->bindParam(":FirstName", $this->FirstName);
+        $query->bindParam(":LastName", $this->LastName);
+        $query->bindParam(":Email", $this->Email);
+        $query->bindParam(":PhoneNumber", $this->PhoneNumber);
+        $query->bindParam(":Address", $this->Address);
+        $query->bindParam(":City", $this->City);
+        $query->bindParam(":Customer_reference", $this->Customer_reference);
+        $query->bindParam(":State", $this->State);
+
         
         // On exécute
         if($query->execute()){
