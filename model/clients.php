@@ -97,29 +97,21 @@ class client{
      */
     public function lireUn(){
         // On écrit la requête
-        $sql = "SELECT * FROM " . $this->table ;
-
+        $sql = "SELECT customer.FirstName,customer.LastName,customer.Email,customer.PhoneNumber,
+        customer.Address,customer.City,customer.State,customer.Customer_reference,customer.State
+     FROM " . $this->table . " Where CustomerID=$this->CustomerID";
         // On prépare la requête
-        $query = $this->connexion->prepare( $sql );
+       
 
         // On attache l'id
-        $query->bindParam(1, $this->CustomerID);
+      
 
-        // On exécute la requête
+        $query = $this->connexion->query($sql);
+     
         $query->execute();
 
-        // on récupère la ligne
-        $row = $query->fetch(PDO::FETCH_ASSOC);
-
-        // On hydrate l'objet
-        $this->FirstName = $row['FirstName'];
-        $this->LastName = $row['LastName'];
-        $this->Email = $row['Email'];
-        $this->State = $row['State'];
-        $this->Address= $row['Adress'];
-        $this->City = $row['City'];
-        $this->PhoneNumber = $row['categories_id'];
-        $this->Customer_reference = $row['Customer_reference '];
+        // On retourne le résultat
+        return $query;
         
     }
 
