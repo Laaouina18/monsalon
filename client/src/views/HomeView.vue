@@ -8,14 +8,9 @@
     <header class="l-header" id="header">
         <div class="navbar container flex" style="display:flex;justify-content:space-between; ">
            
-                <a href="#" style="color:black;font-family:var(--font-cursive) ;font-size:x-large;">Beuty<span style="color:brown">Salon</span></a>
-                <a href="" class="login">Login</a>
+                <a href="/" style="color:black;font-family:var(--font-cursive) ;font-size:x-large;">Beuty<span style="color:brown">Salon</span></a>
+                <a href="/login" class="login">Login</a>
             </div>
-           
-
-      
-
-
             
     </header>
     <main>
@@ -29,7 +24,7 @@
                         <h1>Bien venue chez<br><span>BeautySalon</span></h1>
                         <p>Lorem  Optio distinctio quae veritatis voluptates quam possimus, illum iste ut laborum quidem dolorem minus aliquam soluta 
                           neque iusto ipsam necessitatibus aperiam culpa.</p>
-                          <div class="flex"> <a href="#" class="btn">
+                          <div class="flex"> <a href="/inscrir" class="btn">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                             strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" style="width:19%;">
   <path strokeLinecap="round" strokeLinejoin="round"
@@ -38,7 +33,7 @@
    11-6 0 3 3 0 016 0z" />
 </svg>
 Creer un compte</a>
-                    <a href="#" class="btn "><svg xmlns="http://www.w3.org/2000/svg" 
+                    <a href="/rendez_vous" class="btn "><svg xmlns="http://www.w3.org/2000/svg" 
                           fill="none" viewBox="0 0 24 24"
                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:19%;">
                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -129,7 +124,7 @@ Creer un compte</a>
                     <div class="box">
                         <div class="inner">
                             <img src="@/assets/img/servicos/limpeza.png" alt="">
-                            <p>nettoyage de fourrure</p>
+                            <p></p>
                         </div>
                     </div>
                 </div>
@@ -144,7 +139,7 @@ Creer un compte</a>
                         <span>Nos Princesses</span>
                     </div>
                 </div>
-                <div class="gallery__list__img row container">
+                <div class="gallery__list__img row container" >
                     <div class="gallery__img">
                         <img src="@/assets/img/img-insta/foto1.png" alt="">
                     </div>
@@ -180,9 +175,9 @@ Creer un compte</a>
             <div class="footer__data">
                 <h1><a href="#"><img src=" @/assets/img/logo.svg" alt=""></a></h1>
                 <div class="footer__data-social">
-                    <a href=""><i class='bx bxl-facebook social__icon'></i></a>
-                    <a href=""><i class='bx bxl-instagram social__icon' ></i></a>
-                    <a href=""><i class='bx bxl-whatsapp social__icon' ></i></a>
+                    <a href=""><i class="bx bxl-facebook social__icon"></i></a>
+                    <a href=""><i class="bx bxl-instagram social__icon"></i></a>
+                    <a href=""><i class="bx bxl-whatsapp social__icon"></i></a>
                 </div>
             </div>
             <div class="footer__data">
@@ -269,6 +264,7 @@ html{
     scroll-behavior: smooth;
 }
 body{
+  
     background-color: var(--white-color);
     font-size: var(--normal-font-size);
     font-family: var(--body-font);
