@@ -29,6 +29,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $client->LastName = $donnees->LastName;
         $client->Address = $donnees->Address;
         $client->City= $donnees->City;
+        $client->Customer_reference=$donnees->Customer_reference;
         $client->Email = $donnees->Email;
         $client->State=$donnees->State;
         $client->Address = $donnees->Address;

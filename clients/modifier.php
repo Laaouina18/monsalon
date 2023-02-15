@@ -17,12 +17,12 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT'){
     $db = $database->getConnection();
 
     // On instancie les produits
-    $donnees= new client($db);
+    $client= new client($db);
 
     // On récupère les informations envoyées
     $donnees = json_decode(file_get_contents("php://input"));
     
-
+var_dump($donnees);
         // Ici on a reçu les données
         // On hydrate notre objet
         $client->CustomerID=$donnees->CustomerID;

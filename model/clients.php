@@ -32,7 +32,7 @@ class client{
     public function lire(){
         // On écrit la requête
         $sql = "SELECT customer.FirstName,customer.LastName,customer.Email,customer.PhoneNumber,
-        customer.Address,customer.City,customer.State,customer.Customer_reference,customer.State
+        customer.Address,customer.City,customer.State,customer.Customer_reference,customer.State,customer.CustomerID
      FROM " . $this->table . " ";
 
         // On prépare la requête
@@ -130,13 +130,13 @@ class client{
      */
   public function supprimer():bool{
     // On écrit la requête
-    $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
+    $sql = "DELETE FROM " . $this->table . " WHERE CustomerID= :CustomerID";
 
     // On prépare la requête
     $query = $this->connexion->prepare( $sql );
 
     // On attache l'id
-    $query->bindParam(':id', $this->CustomerID);
+    $query->bindParam(':CustomerID', $this->CustomerID);
 
     // On exécute la requête
     if($query->execute()){
@@ -153,9 +153,11 @@ class client{
      */
     public function modifier():bool{
         // On écrit la requête
-        $sql = "UPDATE " . $this->table . " SET FirstName = :Firstname, LastName = :LastName,  Address= :Address,    
-         PhoneNumber= :PhoneNumber, City=:City,State=:State,
-         Customer_reference=:Customer_reference,Email=:Email WHERE CustomerID = :CustomerID";
+        $sql = "UPDATE " . $this->table . " SET FirstName =:FirstName,
+        LastName =:LastName,  Address=:Address,    
+         PhoneNumber=:PhoneNumber,City=:City,State=:State,
+         Customer_reference=:Customer_reference,Email=:Email 
+         WHERE CustomerID =:CustomerID";
         
         // On prépare la requête
         $query = $this->connexion->prepare($sql);
