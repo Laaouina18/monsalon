@@ -6,17 +6,17 @@
 <div class="cont w-[100]">
 
     <header class="l-header" id="header">
-        <div class="navbar container flex">
-            <div style="display:flex;justify-content: space-between; " >
+        <div class="navbar container flex" style="display:flex;justify-content:space-between; ">
+           
                 <a href="#" style="color:black;font-family:var(--font-cursive) ;font-size:x-large;">Beuty<span style="color:brown">Salon</span></a>
-                <a href="" >Login</a>
+                <a href="" class="login">Login</a>
             </div>
            
 
-            <div class="nav__toggle" id="nav-toggle">
-                <i class='bx bx-menu'></i>
-            </div>
-        </div>
+      
+
+
+            
     </header>
     <main>
         <section class="hero">
@@ -91,7 +91,7 @@ Creer un compte</a>
                     </div>
                     <div class="box">
                         <div class="inner">
-                            <img src="@/assets/img/servicos/pedicure.png" alt="">
+                            <img src="@/assets/img/servicos/pedicure.png" alt="" >
                             <p>Pédicures</p>
                         </div>
                     </div>
@@ -104,31 +104,32 @@ Creer un compte</a>
                     <div class="box">
                         <div class="inner">
                             <img src="@/assets/img/servicos/pentado.png" alt="">
-                            <p>penteado</p>
+                            <p>Penté</p>
                         </div>
                     </div>
                     <div class="box">
                         <div class="inner">
                             <img src="@/assets/img/servicos/corte.png" alt="">
-                            <p>corte de cabelo</p>
+                            <p>Coupe de cheveux</p>
                         </div>
                     </div>
                     <div class="box">
                         <div class="inner">
                             <img src="@/assets/img/servicos/sobrancelha.png" alt="">
-                            <p>design de sobrancelha</p>
+                            <p>design</p>
                         </div>
                     </div>
                     <div class="box">
                         <div class="inner">
                             <img src="@/assets/img/servicos/depilacao.png" alt="">
-                            <p>depiliação com cera</p>
+                            <p>
+                              épilation à la cire</p>
                         </div>
                     </div>
                     <div class="box">
                         <div class="inner">
                             <img src="@/assets/img/servicos/limpeza.png" alt="">
-                            <p>limpeza de pele</p>
+                            <p>nettoyage de fourrure</p>
                         </div>
                     </div>
                 </div>
@@ -140,7 +141,7 @@ Creer un compte</a>
                 <div class="row">
                     <div class="section__title">
                         <h1>Galerie</h1>
-                        <span>As princesas do nosso instragram</span>
+                        <span>Nos Princesses</span>
                     </div>
                 </div>
                 <div class="gallery__list__img row container">
@@ -221,9 +222,9 @@ Creer un compte</a>
     --header-height: 6.25rem;
 
     /*---------------COLLORS -------------------*/
-    --main-color: #f7e6df;
-    --first-color: #75492b;
-    --second-color: #dfd6a7;
+    --main-color: #d3a7c3;
+    --first-color: #c30f60;
+    --second-color: #75af95;
     --white-color: #ffffff;
     --black-color: #151515;
 
@@ -818,6 +819,16 @@ a{
     .testimonials__item:hover .testimonials__img img{
         transform: translateX(300px) rotate(360deg);
     }
+}
+.login{
+  font-size: large;
+  font-family:sans-serif;
+  color:black;
+  
+}
+.login:hover{
+  cursor: pointer;
+  color: #c30f60;
 }
 @media (min-width: 960px){
     .nav__menu{
