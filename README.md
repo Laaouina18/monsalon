@@ -1,1 +1,1 @@
-<img src="../client/src/assets/img/readme1.png">
+<img src="/client/src/assets/img/readme1.png">
