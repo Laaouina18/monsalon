@@ -90,7 +90,7 @@
         </div>
         <div class="copy">
           
-            <span>Creez 🤎 par Nouha@NH</span>
+            <span>Creé 🤎 par Nouha@NH</span>
         </div>
 </div>
   </div>
