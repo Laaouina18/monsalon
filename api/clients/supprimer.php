@@ -21,6 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
 
     // On récupère l'id du produit
     $donnees = json_decode(file_get_contents("php://input"));
+    
 
     if(!empty($donnees->CustomerID)){
         $client->CustomerID = $donnees->CustomerID;

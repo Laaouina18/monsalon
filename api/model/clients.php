@@ -98,21 +98,17 @@ class client{
     public function lireUn(){
         // On écrit la requête
         $sql = "SELECT customer.FirstName,customer.LastName,customer.Email,customer.PhoneNumber,
-        customer.Address,customer.City,customer.State,customer.Customer_reference,customer.State
-     FROM " . $this->table . " Where CustomerID=$this->CustomerID";
-        // On prépare la requête
+        customer.Address,customer.City,customer.State,customer.Customer_reference,customer.State FROM " . $this->table . " WHERE CustomerID= :CustomerID";
+   
+        $query = $this->connexion->prepare($sql);
+        $query->bindParam(':CustomerID', $this->CustomerID);
+     
        
 
-        // On attache l'id
-      
-
-        $query = $this->connexion->query($sql);
-     
-        $query->execute();
-
         // On retourne le résultat
-        return $query;
-        
+        $query->execute();
+           
+            return $query;
     }
 
     /**
@@ -143,6 +139,20 @@ class client{
      *
      * @return void
      */
+    public function getref(){
+        $sql = "SELECT customer.FirstName,customer.LastName,customer.Email,customer.PhoneNumber,
+        customer.Address,customer.City,customer.State,customer.Customer_reference,customer.State FROM " . $this->table . " WHERE Customer_reference= :Customer_reference";
+   
+        $query = $this->connexion->prepare($sql);
+        $query->bindParam(':Customer_reference', $this->Customer_reference);
+     
+       
+
+        // On retourne le résultat
+        $query->execute();
+           
+            return $query;
+    }
     public function modifier():bool{
         // On écrit la requête
         $sql = "UPDATE " . $this->table . " SET FirstName =:FirstName,

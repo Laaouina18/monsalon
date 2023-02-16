@@ -20,12 +20,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $c = new client($db);
     $donnees = json_decode(file_get_contents("php://input"));
     
-
-    if(!empty($donnees->CustomerID)){
-        $c->CustomerID = $donnees->CustomerID;
+var_dump($donnees->Customer_refrence);
+    if(!empty($donnees->Customer_refrence)){
+        $c->Customer_reference = $donnees->Customer_refrence;
 
     // On récupère les données
-    $stmt = $c->lireUn();
+    $stmt = $c->getref();
    
     }
     // On vérifie si on a au moins 1 produit

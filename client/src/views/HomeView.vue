@@ -1,17 +1,46 @@
 <script >
- 
+import axios from 'axios';
+
 export default {
   data() {
     return {
+      reference: '',
+     
+      isAuthenticated: false,
       divVisible: false
     };
   },
   methods: {
-    afficherDiv() {
+    async login() {
+      try {
+        const response = await axios.post('../api/clients/login.php', {
+          reference: this.reference,
+          
+        });
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+        this.isAuthenticated = true;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.isAuthenticated = false;
+    },
+    checkAuth() {
+      const token = localStorage.getItem('token');
+      this.isAuthenticated = !!token;
+    },
+  },
+  created() {
+    this.checkAuth();
+  },
+  afficherDiv() {
       this.divVisible = true;
     }
-  }
 };
+
 </script>
 
 <template>
@@ -83,11 +112,11 @@ Creer un compte</a>
         </section>
         <div  v-show="divVisible" id="reference">
                
-    <form action="/action_page.php" class="log">
+    <form @submit.prevent="login" class="log">
   
   <div class="mb-3" >
     
-    <input type="text" class="form-control" id="ref" placeholder="Entrer votre reference" name="pswd">
+    <input type="text" v-model="reference" class="form-control" id="ref" placeholder="Entrer votre reference" name="pswd">
   </div>
   
   <button type="submit" class="btn btn-primary">Confirmer</button>
