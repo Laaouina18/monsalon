@@ -16,46 +16,46 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $database = new Database();
     $db = $database->getConnection();
 
-    // On instancie les produits
-    $rendez_vous = new rendez_vous($db);
-    $donnees = json_decode(file_get_contents("php://input"));
-   
-    if(!empty($donnees->idclient)){
-        $rendez_vous->idclient= $donnees->idclient;
-    // On récupère les données
-    $stmt = $rendez_vous->lireUn();
-   
+    // On instancie les clients
+    $c = new rendez_vous($db);
 
-    // On vérifie si on a au moins 1 produit
-    if($stmt->rowCount() > 0){
+    // On récupère l'identifiant du client
+    $c->idclient= $_GET['id'] ;
+
+    // On set l'identifiant du client dans l'objet client
+  
+
+    // On récupère les données du client
+    $stmt = $c->lireUn();
+
+    // On vérifie si le client existe
+    if($stmt->fetch(PDO::FETCH_ASSOC)> 0){
+        // On récupère les données du client
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        extract($row);
+
         // On initialise un tableau associatif
-        $tableauRendez = [];
-        $tableauRendez['rendez_vous'] = [];
-
-        // On parcourt les produits
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            extract($row);
-
-            $rendez_vous = [
-               
-                "dater" => $dater,
-                "temp" => $temp,
-                
-               
-            ];
-
-            $tableauRendez['rendez_vous'][] = $rendez_vous;
-        }
+        $client = [
+            "dater" => $dater,
+            "temp" => $temp,
+       
+        ];
 
         // On envoie le code réponse 200 OK
         http_response_code(200);
 
         // On encode en json et on envoie
-        echo json_encode($tableauRendez);
+        echo json_encode($client);
+    } else {
+        // On envoie le code réponse 404 Not found
+        http_response_code(404);
+
+        // On informe l'utilisateur que le client n'existe pas
+        echo json_encode(array("message" => "Le client n'existe pas."));
     }
 
 }else{
     // On gère l'erreur
     http_response_code(405);
     echo json_encode(["message" => "La méthode n'est pas autorisée"]);
-}}
+}

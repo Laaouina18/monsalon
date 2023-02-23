@@ -10,35 +10,39 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     // On inclut les fichiers de configuration et d'accès aux données
     include_once '../config/Database.php';
-    include_once '../model/rendez_vous.php';
+    include_once '../model/Rendez_vous.php';
 
     // On instancie la base de données
     $database = new Database();
     $db = $database->getConnection();
 
-    // On instancie les produits
-    $rendez = new rendez_vous($db);
+    // On instancie les rendez-vous
+    $rendezVous = new Rendez_vous($db);
 
     // On récupère les informations envoyées
     $donnees = json_decode(file_get_contents("php://input"));
-    var_dump($donnees);
-        // Ici on a reçu les données
+    
+    // On vérifie que toutes les données ont été fournies
+    if(!empty($donnees->date) && !empty($donnees->temps)){
         // On hydrate notre objet
-       
-        $rendez->dater= $donnees->dater;
-        $rendez->temp = $donnees->temp;
-        $rendez->idclient = $donnees->idclient;
-        
+        $rendezVous->dater = $donnees->dater;
+        $rendezVous->temp = $donnees->temp;
 
-        if($rendez->creer()){
+        if($rendezVous->creer()){
             // Ici la création a fonctionné
             // On envoie un code 201
             http_response_code(201);
-            echo json_encode(["message" => "L'ajout a été effectué"]);
+            echo json_encode(["message" => "Le rendez-vous a été pris", "data" => $rendezVous]);
         }else{
             // Ici la création n'a pas fonctionné
             // On envoie un code 503
             http_response_code(503);
-            echo json_encode(["message" => "L'ajout n'a pas été effectué"]);         
+            echo json_encode(["message" => "Le rendez-vous n'a pas pu être pris"]);         
         }
+    } else {
+        // Ici toutes les données n'ont pas été fournies
+        // On envoie un code 400
+        http_response_code(400);
+        echo json_encode(["message" => "Toutes les données sont nécessaires pour prendre un rendez-vous"]);
     }
+}

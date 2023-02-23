@@ -18,6 +18,7 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT'){
 
     // On instancie les produits
     $rendez= new rendez_vous($db);
+    
 
     // On récupère les informations envoyées
     $donnees = json_decode(file_get_contents("php://input"));
@@ -27,6 +28,7 @@ var_dump($donnees);
         // On hydrate notre objet
         $rendez->dater=$donnees->dater;
         $rendez->temp= $donnees->temp;
+        $rendez->idclient=$donnees->idclient;
      
 
         if($rendez->modifier()){

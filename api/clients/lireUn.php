@@ -16,48 +16,47 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $database = new Database();
     $db = $database->getConnection();
 
-    // On instancie les produits
+    // On instancie les clients
     $c = new client($db);
-    $donnees = json_decode(file_get_contents("php://input"));
-    
 
-    if(!empty($donnees->CustomerID)){
-        $c->CustomerID = $donnees->CustomerID;
+    // On récupère l'identifiant du client
+    $c->CustomerID = $_GET['id'] ;
 
-    // On récupère les données
+    // On set l'identifiant du client dans l'objet client
+  
+
+    // On récupère les données du client
     $stmt = $c->lireUn();
-   
-    }
-    // On vérifie si on a au moins 1 produit
+
+    // On vérifie si le client existe
     if($stmt->rowCount() > 0){
+        // On récupère les données du client
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        extract($row);
+
         // On initialise un tableau associatif
-        $tableauClient = [];
-        $tableauClient['client'] = [];
-
-        // On parcourt les produits
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            extract($row);
-
-            $client = [
-              
-                "FirstName" => $FirstName,
-                "LastName" => $LastName,
-                "Email" => $Email,
-                "Adress" => $Address,
-                "City" => $City,
-                "State"=>$State,
-                "PhoneNumber"=>$PhoneNumber,
-                "Customer_reference"=>$Customer_reference
-            ];
-
-            $tableauClient['client'][] = $client;
-        }
+        $client = [
+            "FirstName" => $FirstName,
+            "LastName" => $LastName,
+            "Email" => $Email,
+            "Adress" => $Address,
+            "City" => $City,
+            "State" => $State,
+            "PhoneNumber" => $PhoneNumber,
+            "Customer_reference" => $Customer_reference
+        ];
 
         // On envoie le code réponse 200 OK
         http_response_code(200);
 
         // On encode en json et on envoie
-        echo json_encode($tableauClient);
+        echo json_encode($client);
+    } else {
+        // On envoie le code réponse 404 Not found
+        http_response_code(404);
+
+        // On informe l'utilisateur que le client n'existe pas
+        echo json_encode(array("message" => "Le client n'existe pas."));
     }
 
 }else{

@@ -39,7 +39,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             // Ici la création a fonctionné
             // On envoie un code 201
             http_response_code(201);
-            echo json_encode(["message" => "L'ajout a été effectué"]);
+            echo json_encode(["message" => "L'ajout a été effectué", "data" => $client]);
         }else{
             // Ici la création n'a pas fonctionné
             // On envoie un code 503

@@ -1,46 +1,63 @@
-<script >
+<script>
 import axios from 'axios';
 
 export default {
   data() {
     return {
       reference: '',
-     
       isAuthenticated: false,
       divVisible: false
     };
   },
   methods: {
-    async login() {
-      try {
-        const response = await axios.post('../api/clients/login.php', {
-          reference: this.reference,
-          
+    login() {
+      axios.get(`http://localhost/monsalon/api/clients/login.php?Customer_refrence=${this.reference}`)
+        .then(response => {
+          // Si la réponse est valide
+          if (response.status === 200) {
+            
+            const client = response;
+            console.log(client.data.client[0]);
+            // Stocker les informations de l'utilisateur dans le localStorage ou un cookie
+            localStorage.setItem('client', JSON.stringify(client));
+            // Définir l'utilisateur comme authentifié
+            this.isAuthenticated = true;
+            
+        console.log(this.isAuthenticated );
+            this.$router.push('/rendez_vous');
+          } else {
+            // Gérer les erreurs ici
+            console.error(response);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          // Gérer les erreurs ici
         });
-        const token = response.data.token;
-        localStorage.setItem('token', token);
-        this.isAuthenticated = true;
-      } catch (error) {
-        console.error(error);
-      }
     },
     logout() {
-      localStorage.removeItem('token');
+      // Effacer les informations de l'utilisateur stockées
+      localStorage.removeItem('client');
       this.isAuthenticated = false;
+      console.log(this.isAuthenticated );
+      this.$router.push('/');
     },
     checkAuth() {
-      const token = localStorage.getItem('token');
-      this.isAuthenticated = !!token;
+      // Vérifier si l'utilisateur est authentifié en vérifiant s'il y a des informations stockées
+      const client = localStorage.getItem('client');
+      this.isAuthenticated = true;
+      
+     
+ 
     },
+    afficherDiv() {
+      this.divVisible = true;
+    }
   },
   created() {
     this.checkAuth();
-  },
-  afficherDiv() {
-      this.divVisible = true;
-    }
+  }
 };
-
 </script>
 
 <template>
@@ -48,12 +65,17 @@ export default {
 
     <header class="l-header" id="header">
         <div class="navbar container flex" style="display:flex;justify-content:space-between; ">
-           
+          
                 <a href="/" style="color:black;font-family:var(--font-cursive) ;font-size:x-large;">Beuty<span style="color:brown">Salon</span></a>
-                <button  @click="afficherDiv" class="btn">Login</button>
+                <div v-if="this.isAuthenticated ==false" >
+                <button v-show="!a" @click="afficherDiv" class="btn" >Login</button>
             </div>
-            
-    </header>
+<div v-else>
+           <button v-show="!a" @click="logout" class="btn" id="logout" >Logout</button>
+       </div>
+       </div>
+       </header>
+       
     <main>
         <section class="hero">
             <div class="container">
@@ -110,17 +132,13 @@ Creer un compte</a>
                 </div>
             </div>
         </section>
-        <div  v-show="divVisible" id="reference">
-               
-    <form @submit.prevent="login" class="log">
-  
-  <div class="mb-3" >
-    
-    <input type="text" v-model="reference" class="form-control" id="ref" placeholder="Entrer votre reference" name="pswd">
-  </div>
-  
-  <button type="submit" class="btn btn-primary">Confirmer</button>
-</form>
+        <div  id="reference">
+            <form @submit.prevent="login" class="log">
+    <div class="mb-3">
+      <input type="text" v-model="reference" class="form-control" id="ref" placeholder="Entrer votre reference" name="reference">
+    </div>
+    <button type="submit" class="btn" :disabled="!reference">Confirmer</button>
+  </form>
         </div>
         <section class="services section" id="services">
             <div class="services__content">
@@ -226,7 +244,7 @@ Creer un compte</a>
     <div class="footer">
         <div class="footer__list section container grid">
             <div class="footer__data">
-                <h1><a href="#"><img src=" @/assets/img/logo.svg" alt=""></a></h1>
+                <h1><a href="#"><img src="" at=""></a></h1>
                 <div class="footer__data-social">
                     <a href=""><i class="bx bxl-facebook social__icon"></i></a>
                     <a href=""><i class="bx bxl-instagram social__icon"></i></a>

@@ -65,19 +65,19 @@ class rendez_vous{
     public function lireUn(){
         // On écrit la requête
         $sql = "SELECT rendez_vous.dater,rendez_vous.temp
-     FROM " . $this->table . " Where idclient=$this->idclient";
+     FROM " . $this->table . " Where rendez_vous.idclient=:idclient";
         // On prépare la requête
-       
-
-        // On attache l'id
-      
-
-        $query = $this->connexion->query($sql);
      
-        $query->execute();
-
+        $query = $this->connexion->prepare($sql);
+       
+        $query->bindParam(':idclient', $this->idclient);
+     
+    
         // On retourne le résultat
-        return $query;
+        $query->execute();
+       
+            return $query;
+          
         
     }
 
@@ -111,7 +111,7 @@ class rendez_vous{
      */
     public function modifier():bool{
         // On écrit la requête
-        $sql = "UPDATE " . $this->table . " SET dater=:dater,temp=:temp
+        $sql = "UPDATE " . $this->table . " SET rendez_vous.dater=:dater,rendez_vous.temp=:temp
          WHERE idclient =:idclient";
         
         // On prépare la requête
