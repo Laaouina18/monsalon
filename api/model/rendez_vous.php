@@ -56,7 +56,19 @@ class rendez_vous{
         }
         return false;
     }
+    public function lire(){
+        // On écrit la requête
+        $sql = "SELECT * FROM " . $this->table . " inner join customer where rendez_vous.idclient=customer.CustomerID";
+ 
+        // On prépare la requête
+        $query = $this->connexion->query($sql);
 
+        // On exécute la requête
+        $query->execute();
+
+        // On retourne le résultat
+        return $query;
+    }
     /**
      * Lire un produit
      *

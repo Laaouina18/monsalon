@@ -1,4 +1,83 @@
 
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      dater: null,
+      temp: null,
+      idclient: 41,
+      rendezVous: []
+    }
+  },
+  computed: {
+    availableHours() {
+      if (!this.dater) return []
+      const dayOfWeek = new Date(this.dater).getDay()
+      let hours = []
+      if (dayOfWeek === 0) { // dimanche
+        hours = this.generateHours(9, 12)
+      } else if (dayOfWeek >= 1 && dayOfWeek <= 3 || dayOfWeek === 6) { // lundi à jeudi et samedi
+        hours = this.generateHours(9, 12).concat(this.generateHours(14, 20))
+      } else if (dayOfWeek === 4) { // vendredi
+        hours = this.generateHours(9, 12).concat(this.generateHours(16, 22))
+      }
+
+      // Vérification de la disponibilité des créneaux dans l'API
+      const availableHours = []
+      for (let i = 0; i < hours.length; i++) {
+        const hour = hours[i]
+        const found = this.rendezVous.find(r => r.dater === this.dater && r.temp === hour)
+        if (!found) {
+          availableHours.push(hour)
+        }
+      }
+
+      return availableHours
+    }
+  },
+  methods: {
+    generateHours(startHour, endHour) {
+      const hours = []
+      for (let i = startHour; i <= endHour; i++) {
+        hours.push(`${i.toString().padStart(2, '0')}:00`)
+      }
+      return hours
+    },
+    updateAvailableHours() {
+      this.temp = null // reset selected hour
+
+      // Chargement des rendez-vous depuis l'API
+      axios.get('http://localhost/monsalon/api/rendez_vous/lire.php')
+        .then(response => {
+          this.rendez_vous = response.data.rendez_vous
+        })
+        .catch(error => {
+          console.log(error)
+          alert('Une erreur s\'est produite lors du chargement des rendez-vous.')
+        })
+    },
+    createAppointment() {
+      axios.post('http://localhost/monsalon/api/rendez_vous/creer.php', {
+        dater: this.dater,
+        temp: this.temp,
+        idclient: this.idclient
+      })
+        .then(response => {
+          console.log(response.data)
+          alert('Vous avez pris un rendez-vous.')
+          this.$router.push('/')
+        })
+      .catch(error => {
+      
+        console.log(error);
+        alert('Une erreur s\'est produite lors de la création du client.');
+      });
+    },
+  },
+};
+</script>
 <template>
   <div>
     <header class="l-header" id="header">
@@ -20,11 +99,11 @@
         <div class="select-time">
        
           
-          <form action="">
-            <input type="date" id="start" name="trip-start"
+          <form @submit.prevent="createAppointment">
+            <input v-model="dater" type="date" id="start" name="dater"
      
-       min="2023-01-01" max="2023-12-31" class="form-control" style="margin: 4px;">
-            <select 
+       min="2023-01-01" max="2023-12-31" class="form-control" style="margin: 4px;"  @change="updateAvailableHours">
+            <select  v-model="temp" name="temp"
               id="countries" class="form-control" aria-label="Default select example" 
               style="display:flex;flex-direction: column;margin: 4px;">
               <!-- <option disabled selected>Choose a Time</option>
@@ -36,8 +115,8 @@
               >
                 {{ date.time }}
               </option> -->
-              <option class="form-control" value="">10-11</option>
-              <option  class="form-control" value="">10-11</option>
+              <option v-for="hour ,index in availableHours" :key="index" :value="hour" class="form-control" >{{ hour }}</option>
+            
             </select>
       
             <button type="submit" class="btn">Confirmer</button>

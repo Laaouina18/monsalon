@@ -21,12 +21,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     // On récupère les informations envoyées
     $donnees = json_decode(file_get_contents("php://input"));
-    
+   
     // On vérifie que toutes les données ont été fournies
-    if(!empty($donnees->date) && !empty($donnees->temps)){
+    if(!empty($donnees->dater) && !empty($donnees->temp)){
         // On hydrate notre objet
         $rendezVous->dater = $donnees->dater;
         $rendezVous->temp = $donnees->temp;
+        $rendezVous->idclient=$donnees->idclient;
 
         if($rendezVous->creer()){
             // Ici la création a fonctionné
