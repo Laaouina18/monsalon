@@ -76,13 +76,13 @@ class rendez_vous{
      */
     public function lireUn(){
         // On écrit la requête
-        $sql = "SELECT rendez_vous.dater,rendez_vous.temp
-     FROM " . $this->table . " Where rendez_vous.idclient=:idclient";
+        $sql = "SELECT *
+     FROM " . $this->table . " Where rendez_vous.dater=:dater";
         // On prépare la requête
      
         $query = $this->connexion->prepare($sql);
        
-        $query->bindParam(':idclient', $this->idclient);
+        $query->bindParam(':dater', $this->dater);
      
     
         // On retourne le résultat

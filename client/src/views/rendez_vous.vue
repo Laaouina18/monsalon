@@ -1,4 +1,3 @@
-
 <script>
 import axios from 'axios';
 
@@ -8,7 +7,8 @@ export default {
       dater: null,
       temp: null,
       idclient: 41,
-      rendezVous: []
+      rendezVous: [],
+      test:[]
     }
   },
   computed: {
@@ -33,7 +33,7 @@ export default {
           availableHours.push(hour)
         }
       }
-
+   
       return availableHours
     }
   },
@@ -45,21 +45,29 @@ export default {
       }
       return hours
     },
-    updateAvailableHours() {
-      this.temp = null // reset selected hour
+    async updateAvailableHours() {
+      this.temp = null 
+  const response = await axios.get(`http://localhost/monsalon/api/rendez_vous/lireUn.php?date=${this.dater}`);
+  const existingAppointments = response.data;
 
-      // Chargement des rendez-vous depuis l'API
-      axios.get('http://localhost/monsalon/api/rendez_vous/lire.php')
-        .then(response => {
-          this.rendez_vous = response.data.rendez_vous
-        })
-        .catch(error => {
-          console.log(error)
-          alert('Une erreur s\'est produite lors du chargement des rendez-vous.')
-        })
+  // Affichage des temps de rendez-vous
+  existingAppointments.forEach(appointment => {
+    console.log(appointment.temp);
+  });
+  for(let i=0;i<existingAppointments.length;i++){
+    this.test.push(existingAppointments[i].temp);
+  }
+  
+
     },
     createAppointment() {
+        if (this.temp === "reserved") {
+    alert('Le créneau sélectionné n\'est pas disponible.');
+    return;
+  }
+
       axios.post('http://localhost/monsalon/api/rendez_vous/creer.php', {
+        
         dater: this.dater,
         temp: this.temp,
         idclient: this.idclient
@@ -77,6 +85,7 @@ export default {
     },
   },
 };
+
 </script>
 <template>
   <div>
@@ -86,6 +95,7 @@ export default {
              
             
     </header>
+
     <BaseHeader />
     <div class="rendez-vous">
       <div class="rendez-card shadow-lg" id="card">
@@ -97,11 +107,10 @@ export default {
           @dayclick="onDayClick"
         /> -->
         <div class="select-time">
-       
-          
+      
           <form @submit.prevent="createAppointment">
             <input v-model="dater" type="date" id="start" name="dater"
-     
+            aria-label="Default select example"
        min="2023-01-01" max="2023-12-31" class="form-control" style="margin: 4px;"  @change="updateAvailableHours">
             <select  v-model="temp" name="temp"
               id="countries" class="form-control" aria-label="Default select example" 
@@ -115,8 +124,15 @@ export default {
               >
                 {{ date.time }}
               </option> -->
-              <option v-for="hour ,index in availableHours" :key="index" :value="hour" class="form-control" >{{ hour }}</option>
             
+              <option v-for="hour ,index in availableHours"
+               :key="index" :value="hour"  class="form-control" ><p v-if="!test.includes(hour)">
+                {{ hour }}
+               </p>
+               <p v-else>
+                Reserved
+               </p>
+              </option>
             </select>
       
             <button type="submit" class="btn">Confirmer</button>

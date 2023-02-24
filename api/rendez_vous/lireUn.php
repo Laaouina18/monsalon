@@ -20,32 +20,29 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $c = new rendez_vous($db);
 
     // On récupère l'identifiant du client
-    $c->idclient= $_GET['id'] ;
+    $c->dater= $_GET['date'] ;
 
     // On set l'identifiant du client dans l'objet client
   
 
     // On récupère les données du client
-    $stmt = $c->lireUn();
+    $stmt = $c->lireUn()->fetchAll(PDO::FETCH_ASSOC);
+    
 
     // On vérifie si le client existe
-    if($stmt->fetch(PDO::FETCH_ASSOC)> 0){
+    if($stmt){
         // On récupère les données du client
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        extract($row);
+        
+        
 
         // On initialise un tableau associatif
-        $client = [
-            "dater" => $dater,
-            "temp" => $temp,
-       
-        ];
-
+        
+        
         // On envoie le code réponse 200 OK
         http_response_code(200);
 
         // On encode en json et on envoie
-        echo json_encode($client);
+        echo json_encode($stmt);
     } else {
         // On envoie le code réponse 404 Not found
         http_response_code(404);
