@@ -68,7 +68,7 @@ export default {
           
                 <a href="/" style="color:black;font-family:var(--font-cursive) ;font-size:x-large;">Beuty<span style="color:brown">Salon</span></a>
                 <div v-if="this.isAuthenticated ==false" >
-                <button v-show="!a" @click="afficherDiv" class="btn" >Login</button>
+                <button v-show="!a" @click="login" class="btn" >Login</button>
             </div>
 <div v-else>
            <button v-show="!a" @click="logout" class="btn" id="logout" >Logout</button>
@@ -137,7 +137,7 @@ Creer un compte</a>
     <div class="mb-3">
       <input type="text" v-model="reference" class="form-control" id="ref" placeholder="Entrer votre reference" name="reference">
     </div>
-    <button type="submit" class="btn" :disabled="!reference">Confirmer</button>
+    <button type="submit" class="btn" >Confirmer</button>
   </form>
         </div>
         <section class="services section" id="services">

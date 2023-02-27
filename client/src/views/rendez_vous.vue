@@ -8,12 +8,14 @@ export default {
       temp: null,
       idclient: 41,
       rendezVous: [],
-      test:[]
+      test: [],
+      reserved: []
     }
   },
   computed: {
     availableHours() {
       if (!this.dater) return []
+
       const dayOfWeek = new Date(this.dater).getDay()
       let hours = []
       if (dayOfWeek === 0) { // dimanche
@@ -33,9 +35,8 @@ export default {
           availableHours.push(hour)
         }
       }
-   
       return availableHours
-    }
+    },
   },
   methods: {
     generateHours(startHour, endHour) {
@@ -45,47 +46,49 @@ export default {
       }
       return hours
     },
+
     async updateAvailableHours() {
-      this.temp = null 
-  const response = await axios.get(`http://localhost/monsalon/api/rendez_vous/lireUn.php?date=${this.dater}`);
-  const existingAppointments = response.data;
-
-  // Affichage des temps de rendez-vous
-  existingAppointments.forEach(appointment => {
-    console.log(appointment.temp);
-  });
-  for(let i=0;i<existingAppointments.length;i++){
-    this.test.push(existingAppointments[i].temp);
-  }
-  
-
+      this.temp = null
+      const response = await axios.get(`http://localhost/monsalon/api/rendez_vous/lireUn.php?date=${this.dater}`);
+      const existingAppointments = response.data;
+      // Affichage des temps de rendez-vous
+     for(let i=0;i< existingAppointments.length;i++){
+       this.test.push(existingAppointments[i].temp);
+      };
+       this.reservedd();
+     
     },
+
     createAppointment() {
-        if (this.temp === "reserved") {
-    alert('Le créneau sélectionné n\'est pas disponible.');
-    return;
-  }
+      if (this.temp === "reserved") {
+        alert('Le créneau sélectionné n\'est pas disponible.');
+        return;
+      }
 
       axios.post('http://localhost/monsalon/api/rendez_vous/creer.php', {
-        
         dater: this.dater,
         temp: this.temp,
         idclient: this.idclient
       })
-        .then(response => {
-          console.log(response.data)
-          alert('Vous avez pris un rendez-vous.')
-          this.$router.push('/')
-        })
+      .then(response => {
+        console.log(response.data)
+        alert('Vous avez pris un rendez-vous.')
+        this.$router.push('/')
+      })
       .catch(error => {
-      
         console.log(error);
         alert('Une erreur s\'est produite lors de la création du client.');
       });
     },
-  },
-};
 
+     reservedd() {
+      this.reserved = this.availableHours.filter(hour => !this.test.includes(hour));
+      console.log(this.reserved);
+    },
+  },
+
+ 
+};
 </script>
 <template>
   <div>
@@ -125,13 +128,10 @@ export default {
                 {{ date.time }}
               </option> -->
             
-              <option v-for="hour ,index in availableHours"
-               :key="index" :value="hour"  class="form-control" ><p v-if="!test.includes(hour)">
+              <option v-for="hour ,index in reserved"
+               :key="index" :value="hour"  class="form-control" >
                 {{ hour }}
-               </p>
-               <p v-else>
-                Reserved
-               </p>
+             
               </option>
             </select>
       
