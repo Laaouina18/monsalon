@@ -32,8 +32,14 @@ export default {
         const hour = hours[i]
         const found = this.rendezVous.find(r => r.dater === this.dater && r.temp === hour)
         if (!found) {
+          if (!this.test.includes(hour)) {
+   
+      console.log(hour)
+    
           availableHours.push(hour)
-        }
+
+        }}
+        
       }
       return availableHours
     },
@@ -51,11 +57,15 @@ export default {
       this.temp = null
       const response = await axios.get(`http://localhost/monsalon/api/rendez_vous/lireUn.php?date=${this.dater}`);
       const existingAppointments = response.data;
-      // Affichage des temps de rendez-vous
+      if (existingAppointments.length > 0) {
      for(let i=0;i< existingAppointments.length;i++){
+      
        this.test.push(existingAppointments[i].temp);
-      };
-       this.reservedd();
+     };} else {
+      this.test = [];
+     }
+      
+     
      
     },
 
@@ -81,10 +91,7 @@ export default {
       });
     },
 
-     reservedd() {
-      this.reserved = this.availableHours.filter(hour => !this.test.includes(hour));
-      console.log(this.reserved);
-    },
+ 
   },
 
  
@@ -128,7 +135,7 @@ export default {
                 {{ date.time }}
               </option> -->
             
-              <option v-for="hour ,index in reserved"
+              <option v-for="hour ,index in availableHours"
                :key="index" :value="hour"  class="form-control" >
                 {{ hour }}
              

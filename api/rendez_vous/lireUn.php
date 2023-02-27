@@ -46,9 +46,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     } else {
         // On envoie le code réponse 404 Not found
         http_response_code(404);
-
+$stmt=0;
         // On informe l'utilisateur que le client n'existe pas
-        echo json_encode(array("message" => "Le client n'existe pas."));
+        echo json_encode($stmt);
     }
 
 }else{
