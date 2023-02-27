@@ -18,7 +18,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     // On instancie les produits
     $r = new rendez_vous($db);
-
+    $r->idclient= $_GET['id'] ;
+    
     // On récupère les données
     $stmt = $r->lire();
    

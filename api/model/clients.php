@@ -140,8 +140,7 @@ class client{
      * @return void
      */
     public function getref(){
-        $sql = "SELECT customer.FirstName,customer.LastName,customer.Email,customer.PhoneNumber,
-        customer.Address,customer.City,customer.State,customer.Customer_reference,customer.State FROM " . $this->table . " WHERE Customer_reference= :Customer_reference";
+        $sql = "SELECT * FROM " . $this->table . " WHERE Customer_reference= :Customer_reference";
    
         $query = $this->connexion->prepare($sql);
         $query->bindParam(':Customer_reference', $this->Customer_reference);

@@ -5,35 +5,28 @@ export default {
   data() {
     return {
       reference: '',
-      isAuthenticated: false,
+      isAuthenticated: 'false',
       divVisible: false
     };
   },
   methods: {
-    login() {
-      axios.get(`http://localhost/monsalon/api/clients/login.php?Customer_refrence=${this.reference}`)
-        .then(response => {
-          // Si la réponse est valide
-          if (response.status === 200) {
-            
-            const client = response;
-            console.log(client.data.client[0]);
-            // Stocker les informations de l'utilisateur dans le localStorage ou un cookie
-            localStorage.setItem('client', JSON.stringify(client));
-            // Définir l'utilisateur comme authentifié
-            this.isAuthenticated = true;
-            
+  async  login() {
+        const response = await axios.get(`http://localhost/monsalon/api/clients/login.php?Customer_reference=${this.reference}`);
+      const client = response.data;
+      if(client.client){
+        this.isAuthenticated =true
         console.log(this.isAuthenticated );
-            this.$router.push('/rendez_vous');
-          } else {
-            // Gérer les erreurs ici
-            console.error(response);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          // Gérer les erreurs ici
-        });
+        localStorage.client=client.client[0].CustomerID
+        console.log(localStorage.client)
+        this.$router.push('/rendez_vous') 
+      }else{
+        console.log("la refrence n'existe pas")
+        alert("la reference n'existe pas")
+        this.divVisible=false;
+        this.$router.push('/')
+      }
+
+      
     },
     logout() {
       // Effacer les informations de l'utilisateur stockées
@@ -45,7 +38,7 @@ export default {
     checkAuth() {
       // Vérifier si l'utilisateur est authentifié en vérifiant s'il y a des informations stockées
       const client = localStorage.getItem('client');
-      this.isAuthenticated = true;
+   
       
      
  
@@ -54,9 +47,13 @@ export default {
       this.divVisible = true;
     }
   },
-  created() {
-    this.checkAuth();
-  }
+  mounted() {
+    console.log(this.divVisible);
+    console.log(localStorage.client)
+    this.isAuthenticated = true
+    console.log(this.isAuthenticated)
+  },
+  
 };
 </script>
 
@@ -64,16 +61,17 @@ export default {
 <div class="cont w-[100]">
 
     <header class="l-header" id="header">
-        <div class="navbar container flex" style="display:flex;justify-content:space-between; ">
-          
-                <a href="/" style="color:black;font-family:var(--font-cursive) ;font-size:x-large;">Beuty<span style="color:brown">Salon</span></a>
-                <div v-if="this.isAuthenticated ==false" >
-                <button v-show="!a" @click="login" class="btn" >Login</button>
-            </div>
-<div v-else>
-           <button v-show="!a" @click="logout" class="btn" id="logout" >Logout</button>
-       </div>
-       </div>
+        <div class="navbar container flex" style="display:flex;justify-content:space-between;">
+    <router-link to="/"         href="/" style="color:black;font-family:var(--font-cursive);font-size:x-large;">
+Beuty<span style="color:brown">Salon</span>
+    </router-link> 
+    <div v-if="this.isAuthenticated==true ">
+        <button  @click="logout" class="btn" id="logout">Logout</button>
+    </div>
+    <div v-else>
+        <button @click="afficherDiv" class="btn">Login</button>
+    </div>
+</div>
        </header>
        
     <main>
@@ -133,7 +131,13 @@ Creer un compte</a>
             </div>
         </section>
         <div  id="reference">
-            <form @submit.prevent="login" class="log">
+            <form @submit.prevent="login" v-if="divVisible" style="display: block;" class="log">
+    <div class="mb-3">
+      <input type="text" v-model="reference" class="form-control" id="ref" placeholder="Entrer votre reference" name="reference">
+    </div>
+    <button type="submit" class="btn" >Confirmer</button>
+  </form>
+  <form @submit.prevent="login" v-else style="display:none;" class="log">
     <div class="mb-3">
       <input type="text" v-model="reference" class="form-control" id="ref" placeholder="Entrer votre reference" name="reference">
     </div>

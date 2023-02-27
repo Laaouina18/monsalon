@@ -58,11 +58,12 @@ class rendez_vous{
     }
     public function lire(){
         // On écrit la requête
-        $sql = "SELECT * FROM " . $this->table . " inner join customer where rendez_vous.idclient=customer.CustomerID";
- 
+        $sql = "SELECT * FROM " . $this->table . " inner join customer on rendez_vous.idclient=customer.CustomerID where rendez_vous.idclient=:CustomerID";
+      
+     
         // On prépare la requête
-        $query = $this->connexion->query($sql);
-
+        $query = $this->connexion->prepare($sql);
+        $query->bindParam(':CustomerID', $this->idclient);
         // On exécute la requête
         $query->execute();
 

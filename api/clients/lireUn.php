@@ -36,6 +36,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
         // On initialise un tableau associatif
         $client = [
+            
             "FirstName" => $FirstName,
             "LastName" => $LastName,
             "Email" => $Email,

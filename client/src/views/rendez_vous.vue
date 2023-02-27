@@ -6,7 +6,7 @@ export default {
     return {
       dater: null,
       temp: null,
-      idclient: 41,
+      idclient: localStorage.client,
       rendezVous: [],
       test: [],
       reserved: []
@@ -68,6 +68,24 @@ export default {
      
      
     },
+    mounted() {
+      
+    
+      this.temp = null
+      const response =  axios.get(`http://localhost/monsalon/api/clients/lireUn.php?id=${this.idclient}`);
+      const existingrendez = response.data;
+      console.log(response.data)
+      if (existingrendez.length > 0) {
+     for(let i=0;i< existingrendez.length;i++){
+      
+       this.reserved.push(existingrendez[i]);
+     };} else {
+      this.reserved = [];
+     }
+      
+     
+     
+    },
 
     createAppointment() {
       if (this.temp === "reserved") {
@@ -101,8 +119,9 @@ export default {
   <div>
     <header class="l-header" id="header">
       
-                <a href="/" style="color:black;font-family:var(--font-cursive) ;font-size:x-large;">Beuty<span style="color:brown">Salon</span></a>
-             
+      <router-link to="/"         href="/" style="color:black;font-family:var(--font-cursive);font-size:x-large;">
+Beuty<span style="color:brown">Salon</span>
+    </router-link> 
             
     </header>
 
@@ -164,6 +183,31 @@ export default {
                  </div> -->
 
     </div>
+    <div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Date</th>
+        <th scope="col">heure</th>
+        <th scope="col">Action</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr  v-for="hour ,index in reserved"
+               :key="index">
+        <th scope="row">1</th>
+        <td>{{ hour.CustomerID }}}</td>
+        <td>Cell</td>
+        <td>Cell</td>
+      </tr>
+    
+     
+    </tbody>
+  </table>
+</div>
 
     <BaseFooter />
     <div class="footer">

@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     
     if(!empty($_GET)){
       
-        $c->Customer_reference = $_GET['Customer_refrence'];
+        $c->Customer_reference = $_GET['Customer_reference'];
 
         // On récupère les données
         $stmt = $c->getref();
@@ -39,6 +39,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             extract($row);
 
             $client = [
+                "CustomerID"=>$CustomerID,
                 "FirstName" => $FirstName,
                 "LastName" => $LastName,
                 "Email" => $Email,
