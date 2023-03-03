@@ -1,13 +1,14 @@
 <?php
 // Headers requis
+// Headers requis
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: DELETE");
+header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // On vérifie que la méthode utilisée est correcte
-if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
+if($_SERVER['REQUEST_METHOD'] == 'GET'){
     // On inclut les fichiers de configuration et d'accès aux données
     include_once '../config/Database.php';
     include_once '../model/rendez_vous.php';
@@ -20,16 +21,17 @@ if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
     $rendez = new rendez_vous($db);
 
     // On récupère l'id du produit
-    $donnees = json_decode(file_get_contents("php://input"));
+    $rendez->idr=$_GET['idr'];
+   
 
-    if(!empty($donnees->idclient)){
-        $rendez->idclient = $donnees->idclient;
-
+    if(!empty($rendez->idr)){
+       
         if($rendez->supprimer()){
             // Ici la suppression a fonctionné
             // On envoie un code 200
-            http_response_code(200);
-            echo json_encode(["message" => "La suppression a été effectuée"]);
+            http_response_code(503);
+        
+            echo json_encode(["message" => "La suppression a été effectuée","data" => $rendez]);
         }else{
             // Ici la création n'a pas fonctionné
             // On envoie un code 503

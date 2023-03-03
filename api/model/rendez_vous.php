@@ -101,14 +101,14 @@ class rendez_vous{
      */
   public function supprimer():bool{
     // On écrit la requête
-    $sql = "DELETE FROM " . $this->table . " WHERE idclient= :idclient";
+    $sql = "DELETE FROM " . $this->table . " WHERE rendez_vous.idr=:idr";
 
     // On prépare la requête
     $query = $this->connexion->prepare( $sql );
 
     // On attache l'id
-    $query->bindParam(':idclient', $this->idclient);
-
+    $query->bindParam(':idr', $this->idr);
+ 
     // On exécute la requête
     if($query->execute()){
         return true;
@@ -125,7 +125,7 @@ class rendez_vous{
     public function modifier():bool{
         // On écrit la requête
         $sql = "UPDATE " . $this->table . " SET rendez_vous.dater=:dater,rendez_vous.temp=:temp
-         WHERE idclient =:idclient";
+         WHERE idr =:idr";
         
         // On prépare la requête
         $query = $this->connexion->prepare($sql);
@@ -133,12 +133,12 @@ class rendez_vous{
         // On sécurise les données
         $this->temp=htmlspecialchars(strip_tags($this->temp));
         $this->dater=htmlspecialchars(strip_tags($this->dater));
-        $this->idclient=htmlspecialchars(strip_tags($this->idclient));
+        $this->idr=htmlspecialchars(strip_tags($this->idr));
         
         // On attache les variables
         $query->bindParam(":temp", $this->temp);
         $query->bindParam(":dater", $this->dater);
-        $query->bindParam(":idclient", $this->idclient);
+        $query->bindParam(":idr", $this->idr);
    
 
         

@@ -37,6 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             $rendez_vous = [
                 "dater" => $dater ,
                 "tamp"=>$temp,
+                "idr"=>$idr,
                 "FirstName" => $FirstName,
                 "LastName" => $LastName
          

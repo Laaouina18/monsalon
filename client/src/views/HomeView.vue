@@ -2,9 +2,13 @@
 import axios from 'axios';
 
 export default {
+   
   data() {
     return {
+        date: '',
+      time: '',
       reference: '',
+     
       isAuthenticated: 'false',
       divVisible: false
     };
@@ -48,6 +52,9 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$route.params);
+    const { date, time } = this.$route.params;
+    
     console.log(this.divVisible);
     console.log(localStorage.client)
     this.isAuthenticated = true

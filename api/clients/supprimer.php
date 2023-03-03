@@ -30,7 +30,8 @@ if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
             // Ici la suppression a fonctionné
             // On envoie un code 200
             http_response_code(200);
-            echo json_encode(["message" => "La suppression a été effectuée"]);
+            $tab=[];
+            echo json_encode($tab[]);
         }else{
             // Ici la création n'a pas fonctionné
             // On envoie un code 503

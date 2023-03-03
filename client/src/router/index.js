@@ -26,6 +26,14 @@ const router = createRouter({
       component: () => import('../views/inscrir.vue')
     },
     {
+      path: '/modifier',
+      name: 'modifier',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/rendez_modifier.vue')
+    },
+    {
       path: '/rendez_vous',
       name: 'rendez_vous',
       // route level code-splitting

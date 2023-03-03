@@ -2,12 +2,12 @@
 // Headers requis
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: PUT");
+header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // On vérifie la méthode
-if($_SERVER['REQUEST_METHOD'] == 'PUT'){
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
     // On inclut les fichiers de configuration et d'accès aux données
     include_once '../config/Database.php';
     include_once '../model/rendez_vous.php';
@@ -26,16 +26,17 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT'){
 var_dump($donnees);
         // Ici on a reçu les données
         // On hydrate notre objet
+    
+        $rendez->idr=$_GET['id'];
         $rendez->dater=$donnees->dater;
-        $rendez->temp= $donnees->temp;
-        $rendez->idclient=$donnees->idclient;
+        $rendez->temp=$donnees->temp;
      
 
         if($rendez->modifier()){
             // Ici la modification a fonctionné
             // On envoie un code 200
             http_response_code(200);
-            echo json_encode(["message" => "La modification a été effectuée"]);
+            echo json_encode(["message" => "La modification a été effectuée","data" => $rendez]);
         }else{
             // Ici la création n'a pas fonctionné
             // On envoie un code 503

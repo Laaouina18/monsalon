@@ -5,11 +5,11 @@ export default {
  
   data() {
     return {
+      idr:'localStorage.idr',
       dater: null,
       temp: null,
       date:'',
       time:'',
-      idr:'',
       datemodifier:'',
       tempmodifier:'',
       idclient: localStorage.client,
@@ -78,33 +78,17 @@ export default {
      
     
 
-    read(){
-      console.log(this.idclient)
- axios.get(`http://localhost/monsalon/api/rendez_vous/lire.php?id=${this.idclient}`)
-    .then(response => {
-      const existingrendez = response.data.client;
-   
-     console.log(response.data.client)
-        for (let i = 0; i < existingrendez.length; i++) {
-          this.reserved.push(existingrendez[i]);
-          console.log(existingrendez[i])
-        };
-   
-    })
-    .catch(error => {
-      console.log(error);
-    });
-    },
-    createAppointment() {
+  
+async createAppointment() {
       if (this.temp === "reserved") {
         alert('Le créneau sélectionné n\'est pas disponible.');
         return;
       }
 
-      axios.post('http://localhost/monsalon/api/rendez_vous/creer.php', {
+      const response = await axios.post('http://localhost/monsalon/api/rendez_vous/modifier.php?date=${this.idr}', {
         dater: this.dater,
         temp: this.temp,
-        idclient: this.idclient
+      
       })
       .then(response => {
         console.log(response.data)
@@ -116,35 +100,10 @@ export default {
         alert('Une erreur s\'est produite lors de la création du client.');
       });
     },
-    goToEditPage(hour) {
-     console.log(hour.tamp)
-     this.datemodifier=hour.dater;
-     this.tempmodifier=hour.tamp;
-     console.log(this.datemodifier);
-     console.log(this.tempmodifier)
-     localStorage.idr=hour.idr
-     $this.router.push('/modifier')
-    // Naviguer vers la page de modification et transmettre les données nécessaires
    
+
   },
- async supprimerRendezVous(hour){
-  alert("ètes vous sur");
-  console.log("Suppression du rendez-vous en cours...");
-  console.log(hour.idr)
- await axios.get(`http://localhost/monsalon/api/rendez_vous/supprimer.php?idr=${hour.idr}`)
-console.log("Rendez-vous supprimé avec succès !");
-       
-        
-    // .catch(error => {
-    //   console.error("Une erreur s'est produite lors de la suppression du rendez-vous : ", error);
-    //   $this.router.push('/home');
-    // });
-    
-}
-  },
-  mounted() {
-    this.read();
-  },
+
  
 };
 </script>
@@ -215,34 +174,6 @@ Beuty<span style="color:brown">Salon</span>
                 </button>
                  </div> -->
 
-    </div>
-    <div class="table-responsive">
-      <h1>Mes Rendez_Vous</h1>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Date</th>
-        <th scope="col">heure</th>
-        <th scope="col">Action</th>
-        
-      </tr>
-    </thead>
-    <tbody>
-
-      <tr  v-for="hour ,index in reserved"
-               :key="index">
-        <th scope="row">{{  index+1}}</th>
-        <td>{{ hour.dater }}</td>
-        <td>{{ hour.tamp }}</td>
-        <td style="display:flex;justify-content: space-around;"><a href="/modifier"><button class="btn " @click="goToEditPage(hour)">Modifier</button></a><a href="/"><button class="btn" @click="supprimerRendezVous(hour)">Annuler</button></a></td>
-      </tr>
-    
-     
-    </tbody>
-  </table>
-</div>
-
     <BaseFooter />
     <div class="footer">
         <div class="footer__list section container grid">
@@ -274,6 +205,7 @@ Beuty<span style="color:brown">Salon</span>
         </div>
 </div>
   </div>
+</div>
 </template>
 
 <style scoped>
