@@ -123,6 +123,8 @@ export default {
      console.log(this.datemodifier);
      console.log(this.tempmodifier)
      localStorage.idr=hour.idr
+     localStorage.dater=hour.dater
+     localStorage.temp=hour.tamp
      $this.router.push('/modifier')
     // Naviguer vers la page de modification et transmettre les données nécessaires
    
@@ -143,6 +145,9 @@ console.log("Rendez-vous supprimé avec succès !");
 }
   },
   mounted() {
+ if(this.idclient){
+  console.log(this.idclient)
+ }
     this.read();
   },
  
@@ -235,7 +240,7 @@ Beuty<span style="color:brown">Salon</span>
         <th scope="row">{{  index+1}}</th>
         <td>{{ hour.dater }}</td>
         <td>{{ hour.tamp }}</td>
-        <td style="display:flex;justify-content: space-around;"><a href="/modifier"><button class="btn " @click="goToEditPage(hour)">Modifier</button></a><a href="/"><button class="btn" @click="supprimerRendezVous(hour)">Annuler</button></a></td>
+        <td style="display:flex;justify-content: space-around;"><a href="/modifier"><button class="btn " @click="goToEditPage(hour)">Modifier</button></a><a href="/rendez_vous"><button class="btn" @click="supprimerRendezVous(hour)">Annuler</button></a></td>
       </tr>
     
      

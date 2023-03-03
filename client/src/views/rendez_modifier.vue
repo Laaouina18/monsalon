@@ -5,9 +5,9 @@ export default {
  
   data() {
     return {
-      idr:'localStorage.idr',
-      dater: null,
-      temp: null,
+      idr:localStorage.idr,
+      dater: localStorage.dater,
+      temp: localStorage.temp,
       date:'',
       time:'',
       datemodifier:'',
@@ -38,7 +38,7 @@ export default {
         const hour = hours[i]
         const found = this.rendezVous.find(r => r.dater === this.dater && r.temp === hour)
         if (!found) {
-          if (!this.test.includes(hour)) {
+          if (!this.test.includes(hour)&& hour!=this.tempmodifier) {
    
       console.log(hour)
     
@@ -80,20 +80,22 @@ export default {
 
   
 async createAppointment() {
+  console.log(this.idr)
       if (this.temp === "reserved") {
         alert('Le créneau sélectionné n\'est pas disponible.');
         return;
       }
 
-      const response = await axios.post('http://localhost/monsalon/api/rendez_vous/modifier.php?date=${this.idr}', {
-        dater: this.dater,
-        temp: this.temp,
+      const response = await axios.post(`http://localhost/monsalon/api/rendez_vous/modifier.php?id=${this.idr}`, {
+      dater: this.dater,
+      temp: this.temp
+      
       
       })
       .then(response => {
         console.log(response.data)
         alert('Vous avez pris un rendez-vous.')
-        this.$router.push('/')
+        this.$router.push('/rendez_vous')
       })
       .catch(error => {
         console.log(error);
@@ -133,7 +135,7 @@ Beuty<span style="color:brown">Salon</span>
             <input v-model="dater" type="date" id="start" name="dater"
             aria-label="Default select example"
        min="2023-01-01" max="2023-12-31" class="form-control" style="margin: 4px;"  @change="updateAvailableHours">
-            <select  v-model="temp" name="temp"
+            <select name="temp" v-model="temp"
               id="countries" class="form-control" aria-label="Default select example" 
               style="display:flex;flex-direction: column;margin: 4px;">
               <!-- <option disabled selected>Choose a Time</option>
@@ -145,7 +147,11 @@ Beuty<span style="color:brown">Salon</span>
               >
                 {{ date.time }}
               </option> -->
-            
+              <option 
+                :value="temp"  class="form-control" >
+                {{ temp }}
+             
+              </option>
               <option v-for="hour ,index in availableHours"
                :key="index" :value="hour"  class="form-control" >
                 {{ hour }}

@@ -34,7 +34,7 @@ export default {
     },
     logout() {
       // Effacer les informations de l'utilisateur stockées
-      localStorage.removeItem('client');
+
       this.isAuthenticated = false;
       console.log(this.isAuthenticated );
       this.$router.push('/');
