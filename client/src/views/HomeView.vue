@@ -73,10 +73,10 @@ export default {
 Beuty<span style="color:brown">Salon</span>
     </router-link> 
     <div v-if="this.isAuthenticated==true ">
-        <button  @click="logout" class="btn" id="logout">Logout</button>
+        <button  @click="logout" class="btne" id="logout">Logout</button>
     </div>
     <div v-else>
-        <button @click="afficherDiv" class="btn">Login</button>
+        <button @click="afficherDiv" class="btne">Login</button>
     </div>
 </div>
        </header>
@@ -92,7 +92,7 @@ Beuty<span style="color:brown">Salon</span>
                         <h1>Bien venue chez<br><span>BeautySalon</span></h1>
                         <p>Lorem  Optio distinctio quae veritatis voluptates quam possimus, illum iste ut laborum quidem dolorem minus aliquam soluta 
                           neque iusto ipsam necessitatibus aperiam culpa.</p>
-                          <div class="flex"> <a href="/inscrir" class="btn">
+                          <div class="flex"> <a href="/inscrir" class="btne">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                             strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" style="width:19%;">
   <path strokeLinecap="round" strokeLinejoin="round"
@@ -101,7 +101,7 @@ Beuty<span style="color:brown">Salon</span>
    11-6 0 3 3 0 016 0z" />
 </svg>
 Creer un compte</a>
-                    <a href="/rendez_vous" class="btn "><svg xmlns="http://www.w3.org/2000/svg" 
+                    <a href="/rendez_vous" class="btne "><svg xmlns="http://www.w3.org/2000/svg" 
                           fill="none" viewBox="0 0 24 24"
                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:19%;">
                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -138,7 +138,7 @@ Creer un compte</a>
             </div>
         </section>
         <div  id="reference">
-            <form @submit.prevent="login" v-if="divVisible" style="display: block;" class="log">
+            <form @submit.prevent="login"  v-if="divVisible" style="display: block;" class="log">
     <div class="mb-3">
       <input type="text" v-model="reference" class="form-control" id="ref" placeholder="Entrer votre reference" name="reference">
     </div>
@@ -247,7 +247,7 @@ Creer un compte</a>
                         <img src="@/assets/img/img-insta/foto8.png" alt="">
                     </div>
                 </div>
-                <button class="btn">en savoir plus</button>
+                <button class="btne">en savoir plus</button>
             </div>
         </section>
      

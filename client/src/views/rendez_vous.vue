@@ -26,9 +26,9 @@ export default {
       let hours = []
       if (dayOfWeek === 0) { // dimanche
         hours = this.generateHours(9, 12)
-      } else if (dayOfWeek >= 1 && dayOfWeek <= 3 || dayOfWeek === 6) { // lundi à jeudi et samedi
+      } else if (dayOfWeek >= 1 && dayOfWeek <= 4 || dayOfWeek === 6) { // lundi à jeudi et samedi
         hours = this.generateHours(9, 12).concat(this.generateHours(14, 20))
-      } else if (dayOfWeek === 4) { // vendredi
+      } else if (dayOfWeek === 5) { // vendredi
         hours = this.generateHours(9, 12).concat(this.generateHours(16, 22))
       }
 
@@ -38,13 +38,13 @@ export default {
         const hour = hours[i]
         const found = this.rendezVous.find(r => r.dater === this.dater && r.temp === hour)
         if (!found) {
-          if (!this.test.includes(hour)) {
+          // if (!this.test.includes(hour)) {
    
       console.log(hour)
     
           availableHours.push(hour)
 
-        }}
+        }
         
       }
       return availableHours
@@ -61,6 +61,7 @@ export default {
 
     async updateAvailableHours() {
       this.temp = null
+
       const response = await axios.get(`http://localhost/monsalon/api/rendez_vous/lireUn.php?date=${this.dater}`);
       const existingAppointments = response.data;
       if (existingAppointments.length > 0) {
@@ -95,26 +96,37 @@ export default {
       console.log(error);
     });
     },
-    createAppointment() {
+   
+    createAppointment(hour) {
+      this.temp=hour
       if (this.temp === "reserved") {
         alert('Le créneau sélectionné n\'est pas disponible.');
         return;
       }
 
       axios.post('http://localhost/monsalon/api/rendez_vous/creer.php', {
-        dater: this.dater,
+      dater:this.dater,
         temp: this.temp,
         idclient: this.idclient
       })
       .then(response => {
         console.log(response.data)
+        console.log(this.temp)
+        console.log(this.dater)
         alert('Vous avez pris un rendez-vous.')
-        this.$router.push('/')
+      
+      
+        // reload() 
+    
       })
       .catch(error => {
         console.log(error);
-        alert('Une erreur s\'est produite lors de la création du client.');
+      
       });
+    },
+    echec(){
+   
+      alert('ce rendez vous est réservé')
     },
     goToEditPage(hour) {
      console.log(hour.tamp)
@@ -175,13 +187,15 @@ Beuty<span style="color:brown">Salon</span>
         /> -->
         <div class="select-time">
       
-          <form @submit.prevent="createAppointment">
-            <input v-model="dater" type="date" id="start" name="dater"
+         
+          <input v-model="dater" type="date" id="start" name="dater"
             aria-label="Default select example"
        min="2023-01-01" max="2023-12-31" class="form-control" style="margin: 4px;"  @change="updateAvailableHours">
-            <select  v-model="temp" name="temp"
+         
+      
+       <!-- <select 
               id="countries" class="form-control" aria-label="Default select example" 
-              style="display:flex;flex-direction: column;margin: 4px;">
+              style="display:flex;flex-direction: column;margin: 4px;"> -->
               <!-- <option disabled selected>Choose a Time</option>
               <option
                 v-for="date in aviablesHours"
@@ -191,21 +205,28 @@ Beuty<span style="color:brown">Salon</span>
               >
                 {{ date.time }}
               </option> -->
-            
-              <option v-for="hour ,index in availableHours"
-               :key="index" :value="hour"  class="form-control" >
-                {{ hour }}
-             
-              </option>
-            </select>
-      
-            <button type="submit" class="btn">Confirmer</button>
-          </form>
-          
-        </div>
+            </div>
       </div>
       
     </div>
+    <div class="row" style="width:100%;justify-content: center;">
+      <div v-for="hour ,index in availableHours"   :key="index" :value="hour"  style="margin:22px" >
+            
+         
+
+       
+        <a href="/rendez_vous"  v-if="!this.test.includes(hour)" >  <button  @click="createAppointment(hour)"  type="submit"  class="btn btn-info" style="background-color: cyan important;"
+              >
+                {{ hour }}
+             
+            </button></a>
+            <a href="/rendez_vous" v-else ><button class="btn btn-danger  " @click="echec()">
+             {{ hour }}
+            </button></a>
+      
+            </div>
+    </div>    
+        
     <div  class="resevertion bg-white m-auto w-full">
       <!-- get length of userAppointments -->
       
@@ -235,12 +256,14 @@ Beuty<span style="color:brown">Salon</span>
     </thead>
     <tbody>
 
-      <tr  v-for="hour ,index in reserved"
+      <tr  v-for="hour ,index in reserved
+"
                :key="index">
         <th scope="row">{{  index+1}}</th>
         <td>{{ hour.dater }}</td>
         <td>{{ hour.tamp }}</td>
-        <td style="display:flex;justify-content: space-around;"><a href="/modifier"><button class="btn " @click="goToEditPage(hour)">Modifier</button></a><a href="/rendez_vous"><button class="btn" @click="supprimerRendezVous(hour)">Annuler</button></a></td>
+        <td style="display:flex;justify-content: space-around;"><a href="/modifier"><button class="btn btn-primary " @click="goToEditPage(hour)">Modifier</button></a><a href="/rendez_vous">
+          <button class="btn btn-danger" @click="supprimerRendezVous(hour)">Annuler</button></a></td>
       </tr>
     
      

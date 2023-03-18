@@ -26,9 +26,9 @@ export default {
       let hours = []
       if (dayOfWeek === 0) { // dimanche
         hours = this.generateHours(9, 12)
-      } else if (dayOfWeek >= 1 && dayOfWeek <= 3 || dayOfWeek === 6) { // lundi à jeudi et samedi
+      } else if (dayOfWeek >= 1 && dayOfWeek <= 4 || dayOfWeek === 6) { // lundi à jeudi et samedi
         hours = this.generateHours(9, 12).concat(this.generateHours(14, 20))
-      } else if (dayOfWeek === 4) { // vendredi
+      } else if (dayOfWeek === 5) { // vendredi
         hours = this.generateHours(9, 12).concat(this.generateHours(16, 22))
       }
 
@@ -38,13 +38,13 @@ export default {
         const hour = hours[i]
         const found = this.rendezVous.find(r => r.dater === this.dater && r.temp === hour)
         if (!found) {
-          if (!this.test.includes(hour)&& hour!=this.tempmodifier) {
+          // if (!this.test.includes(hour)&& hour!=this.tempmodifier) {
    
       console.log(hour)
     
           availableHours.push(hour)
 
-        }}
+        }
         
       }
       return availableHours
@@ -79,7 +79,8 @@ export default {
     
 
   
-async createAppointment() {
+async createAppointment(hour) {
+  this.temp=hour
   console.log(this.idr)
       if (this.temp === "reserved") {
         alert('Le créneau sélectionné n\'est pas disponible.');
@@ -102,7 +103,10 @@ async createAppointment() {
         alert('Une erreur s\'est produite lors de la création du client.');
       });
     },
+    echec(){
    
+   alert('ce rendez vous est réservé')
+ },
 
   },
 
@@ -131,41 +135,36 @@ Beuty<span style="color:brown">Salon</span>
         /> -->
         <div class="select-time">
       
-          <form @submit.prevent="createAppointment">
+      
             <input v-model="dater" type="date" id="start" name="dater"
             aria-label="Default select example"
        min="2023-01-01" max="2023-12-31" class="form-control" style="margin: 4px;"  @change="updateAvailableHours">
-            <select name="temp" v-model="temp"
-              id="countries" class="form-control" aria-label="Default select example" 
-              style="display:flex;flex-direction: column;margin: 4px;">
-              <!-- <option disabled selected>Choose a Time</option>
-              <option
-                v-for="date in aviablesHours"
-                :value="date.time"
-                :key="date"
-                :v-model="SelectedTime"
-              >
-                {{ date.time }}
-              </option> -->
-              <option 
-                :value="temp"  class="form-control" >
-                {{ temp }}
-             
-              </option>
-              <option v-for="hour ,index in availableHours"
-               :key="index" :value="hour"  class="form-control" >
-                {{ hour }}
-             
-              </option>
-            </select>
+            
       
-            <button type="submit" class="btn">Confirmer</button>
-          </form>
+       
           
         </div>
       </div>
       
     </div>
+    <div class="row" style="width:100%;justify-content: center;">
+      <div v-for="hour ,index in availableHours"   :key="index" :value="hour"  style="margin:22px" >
+            
+         
+
+       
+              <button v-if="!this.test.includes(hour)"   @click="createAppointment(hour)"  type="submit"  class="btn btn-info" style="background-color: cyan important;"
+              >
+                {{ hour }}
+             
+            </button>
+            <button v-else class="btn btn-danger  " @click="echec()">
+             {{ hour }}
+            </button>
+      
+            </div>
+    </div>
+            
     <div  class="resevertion bg-white m-auto w-full">
       <!-- get length of userAppointments -->
       
