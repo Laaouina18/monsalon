@@ -56,8 +56,8 @@ export default {
       for (let i = startHour; i <= endHour; i++) {
         hours.push(`${i.toString().padStart(2, '0')}:00`)
       }
-      return hours
-    },
+      return hours },
+ 
 
     async updateAvailableHours() {
       this.temp = null
@@ -73,14 +73,24 @@ export default {
       
      
      
-    },
+    }, 
  
      
     
 
   
 async createAppointment(hour) {
+
+  let aujourdhui = new Date();
+let jour = aujourdhui.getDate();
+let mois = aujourdhui.getMonth() + 1;
+let annee = aujourdhui.getFullYear();
+let d=jour + "/" + mois + "/" + annee;
+if(this.dater==d){
+  alert("vous ne pouvez pas changé la date de rendez vous ")
+}else{
   this.temp=hour
+
   console.log(this.idr)
       if (this.temp === "reserved") {
         alert('Le créneau sélectionné n\'est pas disponible.');
@@ -96,6 +106,7 @@ async createAppointment(hour) {
       .then(response => {
         console.log(response.data)
         alert('Vous avez pris un rendez-vous.')
+   
         this.$router.push('/rendez_vous')
       })
       .catch(error => {

@@ -15,7 +15,12 @@ export default {
       idclient: localStorage.client,
       rendezVous: [],
       test: [],
-      reserved: []
+      reserved: [],
+      //  aujourdhui : new Date(),
+      // jour :aujourdhui.getDate(),
+      //   mois : aujourdhui.getMonth() + 1,
+      //    annee : aujourdhui.getFullYear(),
+      // d:jour + "/" + mois + "/" + annee
     }
   },
   computed: {
@@ -157,6 +162,11 @@ console.log("Rendez-vous supprimé avec succès !");
 }
   },
   mounted() {
+    let aujourdhui = new Date();
+let jour = aujourdhui.getDate();
+let mois = aujourdhui.getMonth() + 1;
+let annee = aujourdhui.getFullYear();
+console.log(jour + "/" + mois + "/" + annee);
  if(this.idclient){
   console.log(this.idclient)
  }
@@ -262,8 +272,11 @@ Beuty<span style="color:brown">Salon</span>
         <th scope="row">{{  index+1}}</th>
         <td>{{ hour.dater }}</td>
         <td>{{ hour.tamp }}</td>
-        <td style="display:flex;justify-content: space-around;"><a href="/modifier"><button class="btn btn-primary " @click="goToEditPage(hour)">Modifier</button></a><a href="/rendez_vous">
-          <button class="btn btn-danger" @click="supprimerRendezVous(hour)">Annuler</button></a></td>
+        <div>
+          <td  style="display:flex;justify-content: space-around;"><a href="/modifier" ><button class="btn btn-primary " @click="goToEditPage(hour)">Modifier</button></a><a href="/rendez_vous">
+          <button  v-if="new Date().toLocaleDateString() !== new Date(hour.dater).toLocaleDateString()"  class="btn btn-danger" @click="supprimerRendezVous(hour)">Annuler</button></a></td>
+        </div>
+
       </tr>
     
      
