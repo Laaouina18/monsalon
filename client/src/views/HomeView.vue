@@ -92,7 +92,7 @@ Beuty<span style="color:brown">Salon</span>
                         <h1>Bien venue chez<br><span>BeautySalon</span></h1>
                         <p>Lorem  Optio distinctio quae veritatis voluptates quam possimus, illum iste ut laborum quidem dolorem minus aliquam soluta 
                           neque iusto ipsam necessitatibus aperiam culpa.</p>
-                          <div class="flex"> <a href="/inscrir" class="btne">
+                          <div class="flex"> <a href="/inscrir" ><button class="btne">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                             strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" style="width:19%;">
   <path strokeLinecap="round" strokeLinejoin="round"
@@ -100,12 +100,14 @@ Beuty<span style="color:brown">Salon</span>
   0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0
    11-6 0 3 3 0 016 0z" />
 </svg>
-Creer un compte</a>
-                    <a href="/rendez_vous" class="btne "><svg xmlns="http://www.w3.org/2000/svg" 
+Creer un compte
+                          </button>
+        </a>
+                    <a href="/rendez_vous" style="" ><button class="btne "><svg xmlns="http://www.w3.org/2000/svg" 
                           fill="none" viewBox="0 0 24 24"
                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:19%;">
                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>Prise de rendez vous</a></div>
+                    </svg>Prise de rendez vous</button></a></div>
                        
                     </div>
                 </div>
@@ -142,7 +144,7 @@ Creer un compte</a>
     <div class="mb-3">
       <input type="text" v-model="reference" class="form-control" id="ref" placeholder="Entrer votre reference" name="reference">
     </div>
-    <button type="submit" class="btn" >Confirmer</button>
+    <button type="submit" class="btne" >Confirmer</button>
   </form>
   <form @submit.prevent="login" v-else style="display:none;" class="log">
     <div class="mb-3">
@@ -247,7 +249,7 @@ Creer un compte</a>
                         <img src="@/assets/img/img-insta/foto8.png" alt="">
                     </div>
                 </div>
-                <button class="btne">en savoir plus</button>
+                <button class="btn">en savoir plus</button>
             </div>
         </section>
      

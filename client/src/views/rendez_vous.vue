@@ -103,7 +103,19 @@ export default {
     },
    
     createAppointment(hour) {
-      this.temp=hour
+      const existingAppointment = this.reserved.find(r => r.dater === this.dater);
+  if (existingAppointment) {
+    alert('Vous avez déjà un rendez-vous pour cette date.');
+    return;
+  }
+
+  // Vérifier si le créneau horaire est disponible
+  if (this.temp === "reserved") {
+    alert('Le créneau sélectionné n\'est pas disponible.');
+    return;
+  }
+
+  this.temp=hour
       if (this.temp === "reserved") {
         alert('Le créneau sélectionné n\'est pas disponible.');
         return;
@@ -129,6 +141,7 @@ export default {
       
       });
     },
+   
     echec(){
    
       alert('ce rendez vous est réservé')

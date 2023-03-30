@@ -81,14 +81,7 @@ export default {
   
 async createAppointment(hour) {
 
-  let aujourdhui = new Date();
-let jour = aujourdhui.getDate();
-let mois = aujourdhui.getMonth() + 1;
-let annee = aujourdhui.getFullYear();
-let d=jour + "/" + mois + "/" + annee;
-if(this.dater==d){
-  alert("vous ne pouvez pas changé la date de rendez vous ")
-}else{
+ 
   this.temp=hour
 
   console.log(this.idr)
