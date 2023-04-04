@@ -6,7 +6,7 @@ export default {
   data() {
     return {
       idr:localStorage.idr,
-      dater: localStorage.dater,
+    dater:'',
       temp: localStorage.temp,
       date:'',
       time:'',
@@ -59,25 +59,29 @@ export default {
       return hours },
  
 
-    async updateAvailableHours() {
-      this.temp = null
-      const response = await axios.get(`http://localhost/monsalon/api/rendez_vous/lireUn.php?date=${this.dater}`);
-      const existingAppointments = response.data;
-      if (existingAppointments.length > 0) {
-     for(let i=0;i< existingAppointments.length;i++){
-      
-       this.test.push(existingAppointments[i].temp);
-     };} else {
-      this.test = [];
-     }
+      async updateAvailableHours() {
+        this.temp = null
+
+const response = await axios.get(`http://localhost/monsalon/api/rendez_vous/lireUn.php?date=${this.dater}`);
+const existingAppointments = response.data;
+if (existingAppointments.length > 0) {
+for(let i=0;i< existingAppointments.length;i++){
+
+ this.test.push(existingAppointments[i].temp);
+};} else {
+this.test = [];
+}
       
      
      
-    }, 
+    },
  
      
     
-
+    echec(){
+   
+   alert('ce rendez vous est réservé')
+ },
   
 async createAppointment(hour) {
 
@@ -140,11 +144,10 @@ Beuty<span style="color:brown">Salon</span>
         <div class="select-time">
       
       
-            <input v-model="dater" type="date" id="start" name="dater"
+          <input v-model="dater" type="date" id="start" name="dater"
             aria-label="Default select example"
        min="2023-01-01" max="2023-12-31" class="form-control" style="margin: 4px;"  @change="updateAvailableHours">
-            
-      
+         
        
           
         </div>
@@ -157,18 +160,18 @@ Beuty<span style="color:brown">Salon</span>
          
 
        
-              <button v-if="!this.test.includes(hour)"   @click="createAppointment(hour)"  type="submit"  class="btn btn-info" style="background-color: cyan important;"
+        <a href="/rendez_vous"  v-if="!this.test.includes(hour)" >  <button  @click="createAppointment(hour)"  type="submit"  class="btn btn-info" style="background-color: cyan important;"
               >
                 {{ hour }}
              
-            </button>
-            <button v-else class="btn btn-danger  " @click="echec()">
+            </button></a>
+            <a href="/rendez_vous" v-else ><button class="btn btn-danger  " @click="echec()">
              {{ hour }}
-            </button>
+            </button></a>
       
             </div>
-    </div>
-            
+    </div>    
+        
     <div  class="resevertion bg-white m-auto w-full">
       <!-- get length of userAppointments -->
       

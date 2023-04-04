@@ -114,7 +114,6 @@ export default {
     alert('Le créneau sélectionné n\'est pas disponible.');
     return;
   }
-
   this.temp=hour
       if (this.temp === "reserved") {
         alert('Le créneau sélectionné n\'est pas disponible.');
